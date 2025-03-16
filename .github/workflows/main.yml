@@ -6,17 +6,18 @@ on:
       - main
 
 jobs:
-  build-apk:
+  build:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
         with:
-          python-version: '3.8'
+          distribution: 'adopt'
+          java-version: '11'
 
       - name: Install system dependencies
         run: |
@@ -29,40 +30,37 @@ jobs:
 
       - name: Install Android SDK and Tools
         run: |
-          # Define Android SDK paths
-          SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
-          CMDLINE_TOOLS=$SDK_ROOT/cmdline-tools
-          LATEST=$CMDLINE_TOOLS/latest
-
-          # Create necessary directories
+          # Set up environment variables
+          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+          export CMDLINE_TOOLS=$ANDROID_SDK_ROOT/cmdline-tools
+          export LATEST=$CMDLINE_TOOLS/latest
           mkdir -p $LATEST
 
-          # Download Android SDK command-line tools
+          # Download and extract command-line tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
           unzip -o cmdline-tools.zip -d $CMDLINE_TOOLS
-
-          # Move extracted files to the correct location
           mv $CMDLINE_TOOLS/cmdline-tools/* $LATEST/
 
-          # Set up environment variables
-          export ANDROID_HOME=$SDK_ROOT
-          export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/33.0.2:$PATH
+          # Add tools to PATH
+          echo "export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/33.0.2:$PATH" >> $HOME/.bashrc
+          source $HOME/.bashrc
 
-          # Accept licenses and install required tools
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2" "ndk;25.2.9519653"
+          # Accept SDK licenses
+          yes | $LATEST/bin/sdkmanager --licenses || true
 
-          # Validate sdkmanager installation
-          if [ ! -f "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" ]; then
-            echo "Error: 'sdkmanager' was not installed successfully."
+          # Install required tools
+          $LATEST/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2" "ndk;25.2.9519653"
+
+          # Verify installation
+          if [ ! -f "$LATEST/bin/sdkmanager" ]; then
+            echo "Error: 'sdkmanager' installation failed!"
             exit 1
           fi
           echo "Android SDK and tools installed successfully."
 
       - name: Install and Configure Aidl
         run: |
-          # Ensure aidl is installed and copied to Buildozer's SDK path
-          sudo apt-get install -y aidl
+          # Ensure aidl is installed and copied correctly
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools/31.0.0
           cp /usr/bin/aidl ~/.buildozer/android/platform/android-sdk/build-tools/31.0.0/
           chmod 777 ~/.buildozer/android/platform/android-sdk/build-tools/31.0.0/aidl
@@ -76,7 +74,7 @@ jobs:
 
       - name: Build APK
         run: |
-          export ANDROID_HOME=~/.buildozer/android/platform/android-sdk
+          export ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk
           export PATH=$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/33.0.2:$PATH
           buildozer init
           buildozer -v android debug
