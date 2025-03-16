@@ -40,7 +40,9 @@ jobs:
           # Download Android SDK command-line tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
           unzip -o cmdline-tools.zip -d $CMDLINE_TOOLS
-          mv $CMDLINE_TOOLS/cmdline-tools $LATEST
+
+          # Move extracted files to the correct location
+          mv $CMDLINE_TOOLS/cmdline-tools/* $LATEST/
 
           # Set up environment variables
           export ANDROID_HOME=$SDK_ROOT
