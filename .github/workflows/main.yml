@@ -41,6 +41,9 @@ jobs:
           unzip -o cmdline-tools.zip -d $CMDLINE_TOOLS
           mv $CMDLINE_TOOLS/cmdline-tools/* $LATEST/
 
+          # Ensure sdkmanager has correct permissions
+          chmod +x $LATEST/bin/sdkmanager
+
           # Add tools to PATH
           echo "export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/33.0.2:$PATH" >> $HOME/.bashrc
           source $HOME/.bashrc
