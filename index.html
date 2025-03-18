@@ -25,7 +25,7 @@
 <body>
   <!-- Header -->
   <header>
-    <div class="logo"8>Image Converter</div>
+    <div class="logo">Image Converter</div>
     <nav>
       <a href="about.html">About</a>
       <a href="faq.html">FAQ</a>
@@ -61,6 +61,7 @@
       <div class="preview" id="preview"></div>
       <div class="download-section" id="download-section"></div>
     </div>
+      <!-- Information container -->
   </main>
      
       <div class="container">
@@ -437,109 +438,78 @@ button:hover {
       transform: scale(1.05);
       box-shadow: 0 6px 15px rgba(255, 75, 43, 0.5);
   }
-          /* Video Player Container */
-        .video-container {
-            max-width: 90%;
-            margin: 20px auto;
-            padding: 15px;
-            background: linear-gradient(135deg, #007BFF, #0056b3);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            text-align: center;
-        }
-
-        /* Title Styling */
-        .video-container h2 {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        /* Video Styling */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-        }
-
-        .video-wrapper iframe,
-        .video-wrapper video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-        }
 
 
 
-        /* Video Styling */
-        .video-wrapper {
-            position: relative;
-            width: 100%;
-            padding-top: 56.25%; /* 16:9 Aspect Ratio */
-        }
-
-        .video-wrapper iframe,
-        .video-wrapper video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 10px;
-        }
 
 
-          /* Main Container */
-        .container {
-            max-width: 90%;
-            margin: 20px auto;
-            padding: 20px;
-            background: linear-gradient(135deg, #007BFF, #0056b3);
-            color: white;
-            text-align: center;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            font-family: Arial, sans-serif;
-        }
-
-        /* Title Styling */
-        .container h2 {
-            margin-bottom: 10px;
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        /* Paragraph Styling */
-        .container p {
-            font-size: 18px;
-            line-height: 1.6;
-        }
 
 
-footer {
-  text-align: center;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.2);
-  margin-top: 50px;
+/* Information Container Styling */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    background: linear-gradient(135deg, #007BFF, #0056b3);
+    color: white;
+    text-align: center;
+    border-radius: clamp(8px, 1.5vw, 12px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-family: system-ui, -apple-system, sans-serif;
+    transition: all 0.3s ease;
 }
 
-/* Dark Mode */
-body.dark-mode {
-  background: linear-gradient(135deg, #1e1e2f, #2a2a40);
-  color: #fff;
+/* Title Styling */
+.container h2 {
+    margin-bottom: clamp(0.75rem, 3vw, 1.25rem);
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
+    font-weight: 700;
+    line-height: 1.3;
 }
 
-body.dark-mode header {
-  background: rgba(0, 0, 0, 0.5);
+/* Paragraph Styling */
+.container p {
+    font-size: clamp(0.9rem, 3vw, 1.1rem);
+    line-height: 1.7;
+    max-width: 65ch;
+    margin: 0 auto;
+    padding: 0.5rem 0;
 }
 
-body.dark-mode .drop-zone {
-  background: rgba(0, 0, 0, 0.3);
+/* Mobile Optimization */
+@media (max-width: 768px) {
+    .container {
+        width: 94%;
+        margin: 1.5rem auto;
+        padding: 1.25rem;
+    }
+    
+    .container p {
+        line-height: 1.6;
+        text-align: justify;
+        hyphens: auto;
+    }
 }
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+    .container {
+        border-radius: 6px;
+        padding: 1rem;
+    }
+    
+    .container h2 {
+        line-height: 1.25;
+    }
+    
+    .container p {
+        text-align-last: center;
+    }
+}
+
+
+
   </style>
   <script>
       // script.js
@@ -622,4 +592,4 @@ document.addEventListener('DOMContentLoaded', () => {
 });
   </script>
 </body>
-</html>
+  </html>
